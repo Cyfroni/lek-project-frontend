@@ -1,15 +1,14 @@
 import { ApiResponse } from "apisauce"
 import { useState } from "react"
 
-// fix types
-type ApiFunc<T, K> = (...args : T[]) => Promise<ApiResponse<K[], K[]>>
+type ResponseData<T> = T extends Promise<ApiResponse<infer T>> ? T : never
 
-export default function useApi<T, K>(apiFunc: ApiFunc<T, K>) {
-  const [data, setData] = useState<K[]>([])
+export default function useApi<T extends (...args: any[]) => any>(apiFunc: T) {
+  const [data, setData] = useState([] as ResponseData<ReturnType<T>>)
   const [error, setError] = useState(false)
   const [loading, setLoading] = useState(false)
 
-  const request = async (...args : T[]) => {
+  const request = async (...args: Parameters<T>) => {
     setLoading(true)
     const response = await apiFunc(...args)
     setLoading(false)
