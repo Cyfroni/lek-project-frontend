@@ -1,32 +1,41 @@
-import { createDrawerNavigator } from "@react-navigation/drawer"
+import { MaterialCommunityIcons } from "@expo/vector-icons"
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import { NavigationContainer } from "@react-navigation/native"
 import * as React from "react"
-import Comments from "./Screens/Comments"
-import Questions from "./Screens/Questions"
+import Comments from "./app/Screens/Comments"
+import Questions from "./app/Screens/Questions"
 
-const Drawer = createDrawerNavigator()
+const Tab = createBottomTabNavigator()
 
-function Navigation() {
+function TabNavigation() {
   return (
-    <Drawer.Navigator useLegacyImplementation initialRouteName="Questions">
-      <Drawer.Screen
+    <Tab.Navigator initialRouteName="Questions">
+      <Tab.Screen
         name="Questions"
         component={Questions}
-        options={{ drawerLabel: "Questions" }}
+        options={{
+          tabBarIcon: ({ size }) => (
+            <MaterialCommunityIcons name="cloud-question" size={size} />
+          ),
+        }}
       />
-      <Drawer.Screen
+      <Tab.Screen
         name="Comments"
         component={Comments}
-        options={{ drawerLabel: "Comments" }}
+        options={{
+          tabBarIcon: ({ size }) => (
+            <MaterialCommunityIcons name="comment" size={size} />
+          ),
+        }}
       />
-    </Drawer.Navigator>
+    </Tab.Navigator>
   )
 }
 
 export default function App() {
   return (
     <NavigationContainer>
-      <Navigation />
+      <TabNavigation />
     </NavigationContainer>
   )
 }
